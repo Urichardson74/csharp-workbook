@@ -5,21 +5,44 @@ namespace RockPaperScissors
     class Program
     {
         public static void Main()
-        {
-            Console.WriteLine("Enter hand 1:");
-            string hand1 = Console.ReadLine().ToLower();
-            Console.WriteLine("Enter hand 2:");
-            string hand2 = Console.ReadLine().ToLower();
-            Console.WriteLine(CompareHands(hand1, hand2));
+        {   public string playerchoice { get; set; }
+            public string compchoice { get; set; }
+            public string results { get; set; }
+            public string collectdata { get; set; }
+            public int playerscore = 0;
+            public int compscore = 0;
+            List<string> ListResults = new List <string>
+            
+            Console.WriteLine("Choose rock paper or scissors:");
+            string playerchoice = Console.ReadLine().ToLower();
+            Console.WriteLine(CompareHands(playerchoice, compchoice));
 
             // leave this command at the end so your program does not close automatically
             Console.ReadLine();
         }
         
-        public static string CompareHands(string hand1, string hand2)
+        public void computerChoice
+        {
+            Random randomNumber = new Random ();
+            int x = randomNumber.next(0,3);
+            if (x == 0) 
+            {
+                compchoice = "rock";
+
+            }
+            if (x== 1)
+            {
+                compchoice = "paper"
+            }
+            if (x== 2)
+            {
+                compchoice = "scissors"
+            }
+        }
+        public static string CompareHands(string playerchoice, string compchoice)
         {
             // Your code here
-            return hand1 + ' ' + hand2;
+            return playerchoice + ' ' + compchoice;
         }
     }
 }
