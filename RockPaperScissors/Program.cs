@@ -5,44 +5,38 @@ namespace RockPaperScissors
     class Program
     {
         public static void Main()
-        {   public string playerchoice { get; set; }
-            public string compchoice { get; set; }
-            public string results { get; set; }
-            public string collectdata { get; set; }
-            public int playerscore = 0;
-            public int compscore = 0;
-            List<string> ListResults = new List <string>
-            
-            Console.WriteLine("Choose rock paper or scissors:");
-            string playerchoice = Console.ReadLine().ToLower();
-            Console.WriteLine(CompareHands(playerchoice, compchoice));
-
+        {
+            Console.WriteLine("Enter hand 1:");
+            string hand1 = Console.ReadLine().ToLower();
+            string hand2 = "";
+            Console.WriteLine(CompareHands(hand1, hand2));
+            Random compchoice = new Random();
+            int x = compchoice.Next(0,3);
+              if (x == 0)
+            {
+               
+                hand2 = "Rock";
+            }
+            if (x == 1)
+            {
+           
+                hand2 = "Paper";
+            }
+            if (x == 2)
+            {
+             
+               hand2 = "Scissors";
+            }
+           
             // leave this command at the end so your program does not close automatically
             Console.ReadLine();
+
         }
         
-        public void computerChoice
-        {
-            Random randomNumber = new Random ();
-            int x = randomNumber.next(0,3);
-            if (x == 0) 
-            {
-                compchoice = "rock";
-
-            }
-            if (x== 1)
-            {
-                compchoice = "paper"
-            }
-            if (x== 2)
-            {
-                compchoice = "scissors"
-            }
-        }
-        public static string CompareHands(string playerchoice, string compchoice)
+        public static string CompareHands(string hand1, string hand2)
         {
             // Your code here
-            return playerchoice + ' ' + compchoice;
+            return hand1 + ' ' + hand2;
         }
     }
 }
