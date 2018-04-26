@@ -3,7 +3,7 @@
 namespace RockPaperScissors
 {
     class Program
-    {
+    {l
         public static void Main()
 
         {
@@ -13,7 +13,7 @@ namespace RockPaperScissors
                 Console.WriteLine("Enter hand 1:");
                 string hand1 = Console.ReadLine().ToLower();
                 string hand2 = "";
-                Console.WriteLine(CompareHands(hand1, hand2));
+                
                 // int playerscore = 0;
                 // int compscore = 0;
                 // Console.WriteLine("Computur Score:" + (compscore));
@@ -38,7 +38,7 @@ namespace RockPaperScissors
                     hand2 = "Scissors";
                 }
 
-
+                Console.WriteLine(CompareHands(hand1, hand2));
                 Console.WriteLine("Play Again? [yes or no]");
                 string answer = "";
                 answer = Console.ReadLine();
