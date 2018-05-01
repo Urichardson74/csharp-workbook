@@ -3,7 +3,11 @@
 namespace RockPaperScissors
 {
     class Program
-    {l
+    {
+
+        public static int playerscore = 0;
+        public static int compscore = 0;
+
         public static void Main()
 
         {
@@ -12,33 +16,34 @@ namespace RockPaperScissors
             {
                 Console.WriteLine("Enter hand 1:");
                 string hand1 = Console.ReadLine().ToLower();
-                string hand2 = "";
+                string hand2 = RandomPlay;
                 
                 // int playerscore = 0;
                 // int compscore = 0;
-                // Console.WriteLine("Computur Score:" + (compscore));
-                // Console.Writeine("Player Score:" +(playerscore));
-                Random compchoice = new Random();
-                int x = compchoice.Next(0,3);
-                
-                
-                if (x == 0)
-                {
-
-                    hand2 = "Rock";
-                }
-                if (x == 1)
-                {
-           
-                    hand2 = "Paper";
-                }
-                if (x == 2)
-                {
              
-                    hand2 = "Scissors";
-                }
+                // Random compchoice = new Random();
+                // int x = compchoice.Next(0,3);
+                
+                
+                // if (x == 0)
+                // {
 
-                Console.WriteLine(CompareHands(hand1, hand2));
+                //     hand2 = "rock";
+                // }
+                // if (x == 1)
+                // {
+           
+                //     hand2 = "paper";
+                // }
+                // if (x == 2)
+                // {
+             
+                //     hand2 = "scissors";
+                // }
+                Console.WriteLine("Hand 1 played {0} and Hand 2 played {1}", hand1, hand2);
+                          
+                Console.WriteLine("Computur Score: " + (compscore) + " Player Score: " + (playerscore));
+             
                 Console.WriteLine("Play Again? [yes or no]");
                 string answer = "";
                 answer = Console.ReadLine();
@@ -55,6 +60,14 @@ namespace RockPaperScissors
             Console.ReadLine();
 
         }
+        
+        public static string RandomPlay()
+        {
+            string [] plays = new [] {"rock", "paper", "scissors"};
+            Random rnd = new Random();
+            int compchoice = rnd.Next(0,3);
+            return plays[compchoice];
+                
         }
         
         public static string CompareHands(string hand1, string hand2)
@@ -71,12 +84,12 @@ namespace RockPaperScissors
                  if (hand2 == "paper")
                 {
                     Console.WriteLine("Computer chose paper computer wins.");
-                    // compscore ++;
+                    compscore ++;
                 }
                 else 
                 {
                     Console.WriteLine("Computer chose scissors you win!");
-                    // playerscore ++;
+                    playerscore ++;
                 }
             }
             else if (hand1 == "paper")
@@ -84,12 +97,12 @@ namespace RockPaperScissors
                 if (hand2 == "rock")
                 {
                     Console.WriteLine("Computer chose rock you win!");
-                    // playerscore ++;
+                    playerscore ++;
                 }
                 else 
                 {
                     Console.WriteLine("Computer chose scissors computer wins.");
-                    // compscore ++;
+                    compscore ++;
                 }
             }
             else if (hand1 == "scissors")
@@ -97,12 +110,12 @@ namespace RockPaperScissors
                 if (hand2 == "rock")
                 {
                     Console.WriteLine("Computer chose rock you lose.");
-                    // compscore++;
+                    compscore++;
                 }
                 else
                 {
                     Console.WriteLine("Computer chose paper you win.");
-                    // playerscore++;
+                    playerscore++;
                 }
             
             }
@@ -112,4 +125,4 @@ namespace RockPaperScissors
 
         }
     }
-}
+}}
