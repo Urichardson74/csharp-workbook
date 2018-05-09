@@ -6,7 +6,7 @@ namespace TicTacToe
     {   public static string playerTurn = "O";
         public static string[][] board = new string[][]
         {
-            new string[] {" ", " ", " "},
+            new string[] {"X", "X", ""},
             new string[] {" ", " ", " "},
             new string[] {" ", " ", " "}
         };
@@ -18,11 +18,13 @@ namespace TicTacToe
             do
             {
                 turn ++;
-                DrawBoard();
-                GetInput();
                 playerTurn = (playerTurn == "X") ? "O" : "X";
+                DrawBoard();
+               
+                GetInput();
+                
 
-            } while (!CheckForWin() || !CheckForTie());
+            } while (!CheckForWin() && !CheckForTie());
 
             // leave this command at the end so your program does not close automatically
             Console.ReadLine();
@@ -40,16 +42,15 @@ namespace TicTacToe
 
            public static bool CheckForWin()
         {
-            HorizontalWin();
-            VerticalWin();
-            DiagonalWin();
-            return false;
+            return HorizontalWin() || VerticalWin() || DiagonalWin(); 
+         
         }
 
         public static void PlaceMark(int row, int column)
         {
            
             board[row][column] = playerTurn;
+        
             
         }
 
@@ -60,6 +61,7 @@ namespace TicTacToe
             if (turn == 8)
             {
                 Console.WriteLine ("Tie Game!");
+                return true;
             }
             return false;
         }
@@ -67,13 +69,14 @@ namespace TicTacToe
         public static bool HorizontalWin()
         {
         
-        if (board [0][0] == playerTurn && board [0][1] == playerTurn & board [0][2] == playerTurn ||
-            board [1][0] == playerTurn && board [1][1] == playerTurn & board [1][2] == playerTurn ||
-            board [2][0] == playerTurn && board [2][1] == playerTurn & board [2][2] == playerTurn);
+        if ((board [0][0] == playerTurn && board [0][1] == playerTurn && board [0][2] == playerTurn) ||
+            (board [1][0] == playerTurn && board [1][1] == playerTurn && board [1][2] == playerTurn) ||
+            (board [2][0] == playerTurn && board [2][1] == playerTurn && board [2][2] == playerTurn))
 
             {   
                 
                 Console.WriteLine(playerTurn + "Wins!");
+                return true;
             }
 
         return false;
@@ -82,13 +85,14 @@ namespace TicTacToe
         public static bool VerticalWin()
         {
             
-        if (board [0][0] == playerTurn && board [1][0] == playerTurn & board [2][0] == playerTurn ||
-            board [0][1] == playerTurn && board [1][1] == playerTurn & board [2][1] == playerTurn ||
-            board [0][2] == playerTurn && board [1][2] == playerTurn & board [2][2] == playerTurn);
+        if ((board[0][0] == playerTurn && board[1][0] == playerTurn && board[2][0] == playerTurn) ||
+            (board[0][1] == playerTurn && board[1][1] == playerTurn && board[2][1] == playerTurn) ||
+            (board[0][2] == playerTurn && board[1][2] == playerTurn && board[2][2] == playerTurn))
 
             {   
                 
                 Console.WriteLine(playerTurn + "Wins!");
+                return true;
             }
 
             return false;
@@ -96,12 +100,13 @@ namespace TicTacToe
 
         public static bool DiagonalWin()
         {
-        if (board [2][0] == playerTurn && board [1][1] == playerTurn & board [0][2] == playerTurn ||
-            board [0][0] == playerTurn && board [1][1] == playerTurn & board [2][2] == playerTurn);
+        if (board [2][0] == playerTurn && board [1][1] == playerTurn && board [0][2] == playerTurn ||
+            board [0][0] == playerTurn && board [1][1] == playerTurn && board [2][2] == playerTurn)
 
             {   
                 
                 Console.WriteLine(playerTurn + "Wins!");
+                return true;
             }
 
             return false;

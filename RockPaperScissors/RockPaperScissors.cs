@@ -16,7 +16,8 @@ namespace RockPaperScissors
             {
                 Console.WriteLine("Enter hand 1:");
                 string hand1 = Console.ReadLine().ToLower();
-                string hand2 = RandomPlay;
+                string hand2 = RandomPlay();
+                CompareHands(hand1, hand2);
                 
                 // int playerscore = 0;
                 // int compscore = 0;
@@ -55,7 +56,7 @@ namespace RockPaperScissors
                 {
                     playAgain = false;
                 }
-           
+            }
             // leave this command at the end so your program does not close automatically
             Console.ReadLine();
 
@@ -81,15 +82,15 @@ namespace RockPaperScissors
 
             else if (hand1 == "rock")
             {
-                 if (hand2 == "paper")
+                 if (hand2 == "paper")/*  */
                 {
                     Console.WriteLine("Computer chose paper computer wins.");
-                    compscore ++;
+                    compscore++;
                 }
                 else 
                 {
                     Console.WriteLine("Computer chose scissors you win!");
-                    playerscore ++;
+                    playerscore++;
                 }
             }
             else if (hand1 == "paper")
@@ -97,12 +98,12 @@ namespace RockPaperScissors
                 if (hand2 == "rock")
                 {
                     Console.WriteLine("Computer chose rock you win!");
-                    playerscore ++;
+                    playerscore++;
                 }
                 else 
                 {
                     Console.WriteLine("Computer chose scissors computer wins.");
-                    compscore ++;
+                    compscore++;
                 }
             }
             else if (hand1 == "scissors")
