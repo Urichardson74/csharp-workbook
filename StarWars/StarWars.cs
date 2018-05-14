@@ -7,15 +7,27 @@ namespace StarWars
 		public static void Main()
 		{
 			Person leia = new Person("Leia", "Organa", "Rebel");
+			Person han = new Person("Han","Solo","Rebel");
 			Person darth = new Person("Darth", "Vader", "Imperial");
-			Person Luke = new Person("Luke", "Skywalker","Rebel");
-			Person Boba = new Person("Boba", "Fett", "Imperial");
+			Person luke = new Person("Luke", "Skywalker","Rebel");
+			Person boba = new Person("Boba", "Fett", "Imperial");
+			Ship xwing = new Ship ("X-Wing","Rebel","Fighter", 1);
 			Ship falcon = new Ship("Millenium Falcon","Rebel", "Smuggling", 2);
 			Ship tie = new Ship("Vader's Tie Fighter", "Imperial", "Fighter", 1);
 			Ship slave = new Ship("Slave One", "Imperial", "Fighter", 1);
 			Station DeathStar = new Station("Death Star", "Imperial", 2);
 			Station RebelStation = new Station("Rebel Space Station", "Rebel", 1);
-			Console.WriteLine("Hello world!");		
+			tie.EnterShip(darth, 0);
+			slave.EnterShip(boba, 0);
+			falcon.EnterShip(han, 0);
+			falcon.EnterShip(leia,1);
+			DeathStar.EnterStation(tie, 0);
+			DeathStar.EnterStation(slave, 1);
+			RebelStation.EnterStation(falcon, 1);
+			RebelStation.Report();
+			DeathStar.Report()
+
+			Console.WriteLine("May the Force be with You!");		
 			
 		}
 	
@@ -126,16 +138,20 @@ namespace StarWars
 	
 		public string spaces
 		{
-			get
-			{	
-				foreach (var ship in ships)
-				{
-					Console.WriteLine(String.Format("{0}", ship.Type));
-				}
-
-				return "That's All Folks!";
-			}
+			get;
+			set;
 		}
+
+		public void Report()
+        {
+            foreach (Ship ship in spaces)
+            {
+                Console.WriteLine("Ship: ");
+                Console.WriteLine(ship.Name);
+				Console.WriteLine("Passengers: ");
+                Console.WriteLine(ship.Passengers);
+            }
+        }
 	
 
 		public void EnterStation(Ship ship, int space)

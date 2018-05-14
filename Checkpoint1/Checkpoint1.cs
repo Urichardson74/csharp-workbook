@@ -134,8 +134,7 @@ namespace Checkpoint1
                 }
             Console.WriteLine("The highest nunber is {0}.", high);
             
-        }            
-
+        }           
     }
 
 }

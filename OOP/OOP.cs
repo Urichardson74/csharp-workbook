@@ -15,7 +15,7 @@ public class Program
 		Garage smallGarage = new Garage(2);
 		Garage largeGarage = new Garage(4);
 
-		Console.WriteLine("Please pick a car color: blue, yellow, grey, green red or black")
+		Console.WriteLine("Please pick a car color: blue, yellow, grey, green red or black");
 		carChoice = Console.ReadLine().ToLower();
 
 		
@@ -33,7 +33,7 @@ public class Program
 		Console.WriteLine(smallGarage.Cars);
 		Console.WriteLine(largeGarage.Cars);
 	}
-
+}
 class Car
 	{
     public Car(string initialColor)
