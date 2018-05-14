@@ -6,12 +6,13 @@ namespace Checkpoint1
     {
         static void Main(string[] args)
         {
-           CountByThree();
-           AddSum();
-           Factorial();
-           RanNum();
-           HighestNum();
-
+            //calling all functions
+            CountByThree();
+            AddSum();
+            Factorial();
+            RanNum();
+            HighestNum();
+    
         }
         //1 divisible by 3
         public static void CountByThree()
@@ -21,8 +22,7 @@ namespace Checkpoint1
             {
                if (i % 3 == 0)
                 {
-                    count ++; 
-                    
+                    count ++;   
                 }
         
             } 
@@ -41,8 +41,8 @@ namespace Checkpoint1
             while (play)
             {
                 Console.WriteLine("Please enter a number, or 'ok' to get your total");
-            string input = Console.ReadLine().ToLower();
-            if (input == "ok" && sum == 0)
+                string input = Console.ReadLine().ToLower();
+                if (input == "ok" && sum == 0)
                 {
                     Console.WriteLine("Thank you for not playing!");
                     play = false;
@@ -63,7 +63,6 @@ namespace Checkpoint1
         // 3 factorial
         public static void Factorial()
         {   
-            
             int number = 0;
             string input = "";
             //Taking input & converting to integer
@@ -78,7 +77,6 @@ namespace Checkpoint1
             }
             Console.WriteLine("{0}! = {1}", number, results);
             Console.ReadLine();
-
         }
 
         //4 Random number
@@ -120,28 +118,23 @@ namespace Checkpoint1
         {   
             
             int high = 0;
-            int i = 0;
+
 
             Console.WriteLine("Please enter a series of numbers separated by a comma");
-    
             string [] entries = Console.ReadLine().Split(',');
-
             int[] nums = Array.ConvertAll(entries, int.Parse); 
-
+            //converting strings to ints above
             foreach (int num in nums)
-                {
+                {   
+                    //determining highest number below
                     if (num > high)
                     {
-                    high = num;
+                        high = num;
                     }
                 }
             Console.WriteLine("The highest nunber is {0}.", high);
-
             
-        }
-
-
-            
+        }            
 
     }
 
