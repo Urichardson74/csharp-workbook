@@ -10,19 +10,30 @@ public class Program
 		Car greenCar = new Car("green");
 		Car redCar = new Car("red");
 		Car blackCar = new Car("black");
-		string carChoice = "";
+		Person jim = new Person("Jim");
+		Person ron = new Person("Ron");
+		Person sally = new Person("Sally");
+		Person april = new Person("April");
+		Person ann = new Person("Ann");
+		Person steve = new Person("Steve");
+		// string carChoice = "";
 		
 		Garage smallGarage = new Garage(2);
 		Garage largeGarage = new Garage(4);
 
-		Console.WriteLine("Please pick a car color: blue, yellow, grey, green red or black");
-		carChoice = Console.ReadLine().ToLower();
+		// Console.WriteLine("Please pick a car color: blue, yellow, grey, green red or black");
+		// carChoice = Console.ReadLine().ToLower();
 
-		
+		blueCar.InCar(jim);
+		redCar.Incar(ron);
+		greyCar.Incar(sally);
+		blackCar.Incar(april);
+		greenCar.Incar(ann);
+		yellowCar.Incar(steve);
 
 	
-
 		
+		//assigning cars to garages 
 		smallGarage.ParkCar(blueCar, 0);
 		smallGarage.ParkCar(yellowCar, 1);
 		largeGarage.ParkCar(greenCar, 0);
@@ -32,6 +43,16 @@ public class Program
 		
 		Console.WriteLine(smallGarage.Cars);
 		Console.WriteLine(largeGarage.Cars);
+	}
+
+	class Person
+	{
+    public Person(string setname)
+    	{
+    		Name = setname;
+    	}
+    
+   	 public string Name { get; private set; }
 	}
 }
 class Car

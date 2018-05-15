@@ -23,9 +23,11 @@ namespace StarWars
 			falcon.EnterShip(leia,1);
 			DeathStar.EnterStation(tie, 0);
 			DeathStar.EnterStation(slave, 1);
-			RebelStation.EnterStation(falcon, 1);
+			RebelStation.EnterStation(falcon, 0);
+			Console.WriteLine("Ships and Passengers on Rebel Station");
 			RebelStation.Report();
-			DeathStar.Report()
+			Console.WriteLine("Ships and Passengers on Death Star");
+			DeathStar.Report();
 
 			Console.WriteLine("May the Force be with You!");		
 			
@@ -136,7 +138,7 @@ namespace StarWars
 		}
 
 	
-		public string spaces
+		public int spaces
 		{
 			get;
 			set;
@@ -144,8 +146,8 @@ namespace StarWars
 
 		public void Report()
         {
-            foreach (Ship ship in spaces)
-            {
+            foreach (Ship ship in ships)
+            {	
                 Console.WriteLine("Ship: ");
                 Console.WriteLine(ship.Name);
 				Console.WriteLine("Passengers: ");
@@ -166,6 +168,3 @@ namespace StarWars
 	}
 	
 }
-
-
-
