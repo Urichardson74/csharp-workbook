@@ -1,55 +1,59 @@
 ﻿using System;
-					
-public class Program
+
+namespace OOP;
+
 {
-	public static void Main()
+	public class Program
 	{
-		Car blueCar = new Car("blue", 2);
-		Car yellowCar = new Car("yellow", 4);
-		Car greyCar = new Car("grey", 2);
-		Car greenCar = new Car("green", 4);
-		Car redCar = new Car("red", 2);
-		Car blackCar = new Car("black", 4);
-		Person jim = new Person("Jim");
-		Person ron = new Person("Ron");
-		Person sally = new Person("Sally");
-		Person april = new Person("April");
-		Person ann = new Person("Ann");
-		Person steve = new Person("Steve");
-		// string carChoice = "";
-		
-		Garage smallGarage = new Garage(2);
-		Garage largeGarage = new Garage(4);
+		public static void Main()
+		{
+			Car blueCar = new Car("blue", 2);
+			Car yellowCar = new Car("yellow", 4);
+			Car greyCar = new Car("grey", 2);
+			Car greenCar = new Car("green", 4);
+			Car redCar = new Car("red", 2);
+			Car blackCar = new Car("black", 4);
+			Person jim = new Person("Jim");
+			Person ron = new Person("Ron");
+			Person sally = new Person("Sally");
+			Person april = new Person("April");
+			Person ann = new Person("Ann");
+			Person steve = new Person("Steve");
+			// string carChoice = "";
+			
+			Garage smallGarage = new Garage(2);
+			Garage largeGarage = new Garage(4);
 
-		// Console.WriteLine("Please pick a car color: blue, yellow, grey, green red or black");
-		// carChoice = Console.ReadLine().ToLower();
+			// Console.WriteLine("Please pick a car color: blue, yellow, grey, green red or black");
+			// carChoice = Console.ReadLine().ToLower();
 
-		blueCar.EnterCar(jim);
-		redCar.EnterCar(ron);
-		greyCar.EnterCar(sally);
-		blackCar.EnterCar(april);
-		greenCar.EnterCar(ann);
-		yellowCar.EnterCar(steve);
+			blueCar.EnterCar(jim);
+			redCar.EnterCar(ron);
+			greyCar.EnterCar(sally);
+			blackCar.EnterCar(april);
+			greenCar.EnterCar(ann);
+			yellowCar.EnterCar(steve);
 
-	
 		
-		//assigning cars to garages 
-		smallGarage.ParkCar(blueCar, 0);
-		smallGarage.ParkCar(yellowCar, 1);
-		largeGarage.ParkCar(greenCar, 0);
-		largeGarage.ParkCar(greyCar, 1);
-		largeGarage.ParkCar(redCar, 2);
-		largeGarage.ParkCar(blackCar, 3);
-		
-		Console.WriteLine(smallGarage.Cars);
-		Console.WriteLine(largeGarage.Cars);
+			
+			//assigning cars to garages 
+			smallGarage.ParkCar(blueCar, 0);
+			smallGarage.ParkCar(yellowCar, 1);
+			largeGarage.ParkCar(greenCar, 0);
+			largeGarage.ParkCar(greyCar, 1);
+			largeGarage.ParkCar(redCar, 2);
+			largeGarage.ParkCar(blackCar, 3);
+			
+			Console.WriteLine(smallGarage.Cars);
+			Console.WriteLine(largeGarage.Cars);
+		}	
 	}
 
 
 
 
 
-	class Person
+	public class Person
 	{
     	public Person(string setname)
     	{
@@ -82,7 +86,7 @@ public class Program
 
 	class Garage
 	{
-    	private Car[] cars;
+    	public  Car[] cars;
     
    		public Garage(int initialSize)
    		{
@@ -120,11 +124,3 @@ public class Program
 	}
 }
 	
-
-
-
-
-
-
-
-
