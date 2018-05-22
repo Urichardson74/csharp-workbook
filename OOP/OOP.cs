@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace OOP;
-
+namespace OOP
 {
-	public class Program
-	{
-		public static void Main()
+					
+    public class Program
+    {
+       public static void Main()
 		{
 			Car blueCar = new Car("blue", 2);
 			Car yellowCar = new Car("yellow", 4);
@@ -47,22 +48,9 @@ namespace OOP;
 			Console.WriteLine(smallGarage.Cars);
 			Console.WriteLine(largeGarage.Cars);
 		}	
-	}
+    }
 
-
-
-
-
-	public class Person
-	{
-    	public Person(string setname)
-    	{
-    		Name = setname;
-    	}
-    
-   		public string Name { get; private set; }
-	}
-	class Car
+    	class Car
 	{
 		public Person[] people;
     	public Car(string initialColor, int seats1)
@@ -77,14 +65,13 @@ namespace OOP;
 		public int Seats {get; private set;}
     
    	 	public string Color { get; private set; }
-
-		public void EnterCar(Person person, int seat = -1)
+public void EnterCar(Person person, int seat = -1)
         {
-            if (seat < 0) { seat = people.Length; };
-            people[seat] = person;
+            if (seat < 0) { seat = people.Length-1; }
+            if (seat > -1) { people[seat] = person; }
         }
-
-	class Garage
+    }
+class Garage
 	{
     	public  Car[] cars;
     
@@ -101,26 +88,38 @@ namespace OOP;
         	cars[spot] = car;
     	}
 		
-    		public string Cars 
+		public string Cars
 			{
-				get 
+				get
 				{
 					for (int i = 0; i < cars.Length; i++)
 					{
-		
-
 						if (cars[i] != null)
-                    	{
-                        	Console.WriteLine(String.Format("The {0} car is in spot {1}.", cars[i].Color, i));
-                        	for (int j = 0; j < cars[i].people.Length; j++) Console.WriteLine(String.Format("{0} is in car {1}", cars[i].people[j].Name, i));
-                    	}
-
-						return "That's all for this garage.";
-			
+						{
+							Console.WriteLine(String.Format("The {0} car is in spot {1}.", cars[i].Color, i));
+							for (int j = 0; j < cars[i].people.Length; j++)
+							{
+								if (cars[i].people[j] != null)
+								{ Console.WriteLine(String.Format("{0} is in car {1}", cars[i].people[j].Name, i));
+								}
+							}
+						}
 					}
+					return "That's all for this Garage!";
 				}
-			}			
-		}
+			}		
+	}
+
+  	public class Person
+	{
+    	public Person(string setname)
+    	{
+    		Name = setname;
+    	}
+    
+   		public string Name { get; private set; }
 	}
 }
+
+
 	
