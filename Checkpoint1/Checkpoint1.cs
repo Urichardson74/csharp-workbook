@@ -63,13 +63,13 @@ namespace Checkpoint1
         // 3 factorial
         public static void Factorial()
         {   
-            int number = 0;
+            long number = 0;
             string input = "";
             //Taking input & converting to integer
-            Console.WriteLine("Please enter a whole number under 30");
+            Console.WriteLine("Please enter a whole number");
             input = Console.ReadLine();
             number = Convert.ToInt32(input);
-            int results = number;
+            long results = number;
 
             for ( int i = 1; i < number; i++)
             {
