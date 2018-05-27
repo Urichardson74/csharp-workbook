@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Rainforest {
+namespace RainForest {
     class Program {
         static void Main (string[] args) {
             Company rainforest = new Company ("Rainforest, LLC");
 
             string[] cities = new string[] { "Austin", "Houston", "Dallas", "San Antonio" };
-            string[] items = new string[] {"Banana", "Toothpaste", "Baseball", "Laptop"};
+            string[] items = new string[] { "Banana", "Toothpaste", "Baseball", "Laptop" };
 
             foreach (var city in cities) {
-                Warehouse warehouse = new Warehouse (city, 1);
-                rainforest.warehouses.Add (warehouse);
+                rainforest.warehouses.Add (new Warehouse (city, 1));
+                rainforest.warehouses.Add (new Warehouse (city, 2));
             }
 
             for (int i = 0; i < rainforest.warehouses.Count; i++) {
@@ -20,13 +20,16 @@ namespace Rainforest {
                 rainforest.warehouses[i].containers.Add (container);
             }
 
-            for (int i = 0; i < rainforest.warehouses.Count; i++) {
+            for (int i = 0; i < 4; i++) {
                 Container container = rainforest.warehouses[i].containers[0];
                 Item item = new Item (items[i], i);
                 container.items.Add (item);
             }
 
+            rainforest.GenerateManifest ();
+
             Console.WriteLine ("Hello World!");
+            Console.ReadLine;
         }
     }
 
@@ -37,6 +40,52 @@ namespace Rainforest {
         public Company (string name) {
             this.name = name;
             this.warehouses = new List<Warehouse> ();
+        }
+
+        public void GenerateManifest () {
+            string html = @"
+                <html>
+                    <head>
+                      <style>
+                        .company, .warehouse, .container, .item {
+                            padding: 20px;
+                            display: flex;
+                            margin: 10px;
+                            flex-wrap: wrap;
+                        }
+                        .warehouse {
+                            background-color: lightsteelblue;
+                        }
+                        .container {
+                            background-color: lightgreen;
+                        }
+                        .item {
+                            background-color: lightpink;
+                        }
+                      </style>
+                    </head>
+                    <body>
+            ";
+            html += String.Format (@"
+                <h1>{0}</h1>
+                <div class='company'>
+            ", this.name);
+
+            foreach (var warehouse in this.warehouses) {
+                html += String.Format ("<div class=\"warehouse\">{0}", warehouse.location);
+                foreach (var container in warehouse.containers) {
+                    html += String.Format ("<div class=\"container\">{0}", container.id);
+                    foreach (var item in container.items) {
+                        html += String.Format ("<div class=\"item\">{0}</div>", item.name);
+                    }
+                    html += "</div>";
+                }
+                html += "</div>";
+            }
+            html += "</div>";
+            html += "</html>";
+
+            System.IO.File.WriteAllText (@"./index.html", html);
         }
     }
 
