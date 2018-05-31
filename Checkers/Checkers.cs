@@ -31,7 +31,7 @@ namespace Checkers
         
         public Board()
         {
-            // Your code here
+            
             return;
         }
         

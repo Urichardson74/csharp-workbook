@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RainForest {
-    class Program {
-        static void Main (string[] args) {
+namespace RainForest 
+{
+    class Program 
+    {
+
+        static void Main (string[] args) 
+        {
             Company rainforest = new Company ("Rainforest, LLC");
 
             string[] cities = new string[] { "Austin", "Houston", "Dallas", "San Antonio" };
-            string[] items = new string[] { "Banana", "Toothpaste", "Baseball", "Laptop" };
+            string[] items = System.IO.File.ReadAllLines(@"./items.txt");
 
             foreach (var city in cities) {
                 rainforest.warehouses.Add (new Warehouse (city, 1));
@@ -20,20 +24,25 @@ namespace RainForest {
                 rainforest.warehouses[i].containers.Add (container);
             }
 
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < rainforest.warehouses.Count; i++) {
                 Container container = rainforest.warehouses[i].containers[0];
                 Item item = new Item (items[i], i);
                 container.items.Add (item);
+               // index[item.name] = {"container": container};
             }
 
             rainforest.GenerateManifest ();
 
+            Dictionary<string, string[]> index = new Dictionary<string, string[]>();
+
+
             Console.WriteLine ("Hello World!");
-            Console.ReadLine;
+            Console.ReadLine();
         }
     }
 
-    class Company {
+    class Company 
+    {
         public string name;
         public List<Warehouse> warehouses;
 
@@ -42,59 +51,33 @@ namespace RainForest {
             this.warehouses = new List<Warehouse> ();
         }
 
-        public void GenerateManifest () {
-            string html = @"
-                <html>
-                    <head>
-                      <style>
-                        .company, .warehouse, .container, .item {
-                            padding: 20px;
-                            display: flex;
-                            margin: 10px;
-                            flex-wrap: wrap;
-                        }
-                        .warehouse {
-                            background-color: lightsteelblue;
-                        }
-                        .container {
-                            background-color: lightgreen;
-                        }
-                        .item {
-                            background-color: lightpink;
-                        }
-                      </style>
-                    </head>
-                    <body>
-            ";
-            html += String.Format (@"
-                <h1>{0}</h1>
-                <div class='company'>
-            ", this.name);
-
-            foreach (var warehouse in this.warehouses) {
-                html += String.Format ("<div class=\"warehouse\">{0}", warehouse.location);
-                foreach (var container in warehouse.containers) {
-                    html += String.Format ("<div class=\"container\">{0}", container.id);
-                    foreach (var item in container.items) {
-                        html += String.Format ("<div class=\"item\">{0}</div>", item.name);
-                    }
-                    html += "</div>";
+            public void GenerateManifest()
+        {
+            Console.WriteLine(this.name);
+            Console.WriteLine("");
+            foreach (Warehouse warehouse in this.warehouses)
+            {
+                Console.WriteLine(warehouse.location);
+                foreach (Container container in warehouse.containers)
+                {
+                    Console.WriteLine(container.id);
+                    foreach (Item item in container.items)
+                    {
+                        Console.WriteLine(item.name);
+                    } 
                 }
-                html += "</div>";
             }
-            html += "</div>";
-            html += "</html>";
-
-            System.IO.File.WriteAllText (@"./index.html", html);
         }
     }
 
-    class Warehouse {
+    class Warehouse 
+    {
         public string location;
         public int size;
         public List<Container> containers;
 
-        public Warehouse (string location, int size) {
+        public Warehouse (string location, int size) 
+        {
             this.location = location;
             this.size = size;
             this.containers = new List<Container> ();
@@ -102,20 +85,35 @@ namespace RainForest {
 
     }
 
-    class Container {
+    class Container 
+    {
         public List<Item> items;
         public int size;
         public string id;
 
-        public Container (string id, int size) {
+        public Container (string id, int size) 
+        {
             this.id = id;
             this.size = size;
             this.items = new List<Item> ();
         }
 
+           public string AddItem(Item item)
+        {
+            if (this.items.Count < this.size)
+            {
+                this.items.Add(item);
+                return $"Added {item.name}";
+            }
+            else
+            {
+                return "all full";
+            }
+        }
     }
 
-    class Item {
+    class Item 
+    {
         public string name;
         public double price;
 
@@ -123,6 +121,6 @@ namespace RainForest {
             this.name = name;
             this.price = price;
         }
-
     }
+    
 }
