@@ -28,7 +28,7 @@ namespace RainForest
                 Container container = rainforest.warehouses[i].containers[0];
                 Item item = new Item (items[i], i);
                 container.items.Add (item);
-               // index[item.name] = {"container": container};
+                index[item.name] = {"container": container};
             }
 
             rainforest.GenerateManifest ();
@@ -54,7 +54,7 @@ namespace RainForest
             public void GenerateManifest()
         {
             Console.WriteLine(this.name);
-            Console.WriteLine("");
+           
             foreach (Warehouse warehouse in this.warehouses)
             {
                 Console.WriteLine(warehouse.location);
