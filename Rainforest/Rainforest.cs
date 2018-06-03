@@ -8,8 +8,9 @@ namespace RainForest
 
         static void Main (string[] args) 
         {
+            
             Company rainforest = new Company ("Rainforest, LLC");
-
+            Dictionary<string, string> index = new Dictionary<string, string>();
             string[] cities = new string[] { "Austin", "Houston", "Dallas", "San Antonio" };
             string[] items = System.IO.File.ReadAllLines(@"./items.txt");
 
@@ -20,7 +21,7 @@ namespace RainForest
 
             for (int i = 0; i < rainforest.warehouses.Count; i++) {
                 Warehouse warehouse = rainforest.warehouses[i];
-                Container container = new Container ($"{warehouse.location}-1", i + 1);
+                Container container = new Container ($"{warehouse.location}-{i + 1}", i + 1);
                 rainforest.warehouses[i].containers.Add (container);
             }
 
@@ -28,14 +29,16 @@ namespace RainForest
                 Container container = rainforest.warehouses[i].containers[0];
                 Item item = new Item (items[i], i);
                 container.items.Add (item);
-                index[item.name] = {"container": container};
+                index.Add(item.name, container.id);
+    
+              
             }
 
             rainforest.GenerateManifest ();
 
-            Dictionary<string, string[]> index = new Dictionary<string, string[]>();
-
-
+         
+            Console.WriteLine("Please enter an item name to see where it is stored");
+            Console.WriteLine(index[Console.ReadLine()]);
             Console.WriteLine ("Hello World!");
             Console.ReadLine();
         }
