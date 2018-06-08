@@ -40,9 +40,15 @@ namespace Checkers
             {
                 Checker white = new Checker("white", whitePositions[i]);
                 Checker black = new Checker("black", blackPositions[i]);
-                Checker square = new Checker("square", squarePositions[i]);
+                
                 board.Checkers.Add(white);
                 board.Checkers.Add(black);
+               
+            }
+
+            for (int i = 0; i < 32; i++)
+            {
+                Checker square = new Checker("square", squarePositions[i]); 
                 board.Checkers.Add(square);
             }
 
