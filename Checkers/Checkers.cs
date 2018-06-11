@@ -8,32 +8,7 @@ namespace Checkers
     {
         static void Main(string[] args)
         {
-           
-
-            Board board = new Board();
-            board.GenerateCheckers();
-            board.DrawBoard();
-            Console.WriteLine("Select checker row:");
-            int row = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Select checker column:");
-            int col = Convert.ToInt32(Console.ReadLine());
-
-            Checker checker = board.SelectChecker(row, col);
-            Console.WriteLine("Please move checker to an empty space.");
-            Console.WriteLine("Move to which row:");
-            int newRow = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Move to which Column:");
-            int newCol = Convert.ToInt32(Console.ReadLine());
-
-            if (checker.Position == null)
-            {
-                checker.Position = new int[]{ newRow, newCol};
-            }
-            else
-            {
-                Console.WriteLine("Not a legal move");
-            }
-            board.DrawBoard();
+            Game newGame = new Game();
             Console.WriteLine("Hi");
            
         }
@@ -103,6 +78,7 @@ namespace Checkers
         {
              int[][] whitePositions = new int[][] 
             {
+                //creating checkers 
                 new int[] { 0, 1 }, new int[] { 0, 3 }, new int[] { 0, 5 }, new int[] { 0, 7 },
                 new int[] { 1, 0 }, new int[] { 1, 2 }, new int[] { 1, 4 }, new int[] { 1, 6 },
                 new int[] { 2, 1 }, new int[] { 2, 3 }, new int[] { 2, 5 }, new int[] { 2, 7 }
@@ -116,7 +92,8 @@ namespace Checkers
             };
 
                 int[][] squarePositions = new int[][] 
-            {
+            {   
+                //creating squares of checkerboard
                 new int[] { 0, 0 }, new int[] { 0, 2 }, new int[] { 0, 4 }, new int[] { 0, 6 },
                 new int[] { 1, 1 }, new int[] { 1, 3 }, new int[] { 1, 5 }, new int[] { 1, 7 },
                 new int[] { 2, 0 }, new int[] { 2, 2 }, new int[] { 2, 4 }, new int[] { 2, 6 },
@@ -179,15 +156,53 @@ namespace Checkers
         
         public bool CheckForWin()
         {
-            return Checkers.All(x => x.Color == "white") || !Checkers.Exists(x => x.Color == "white");
+            
+        
+            if (Checkers.All(checker => checker.Color == "white"))
+            {
+                Console.WriteLine("White wins!");
+                return true;
+            }
+            else if (Checkers.Exists(checker => checker.Color == "white"))
+            {
+                Console.WriteLine("Black wins!");
+                return true;
+            }
+            return false;
         }
+        
     }
 
     class Game
     {
         public Game()
         {
-            // Your code here
+            Board board = new Board();
+            board.GenerateCheckers();
+            board.DrawBoard();
+            
+            while (!board.CheckForWin())
+            
+            {
+                Console.WriteLine("Select checker row:");
+                int row = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Select checker column:");
+                int col = Convert.ToInt32(Console.ReadLine());
+
+                Checker checker = board.SelectChecker(row, col);
+                Console.WriteLine("Please move checker to an empty space.");
+                Console.WriteLine("Move to which row:");
+                int newRow = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Move to which Column:");
+                int newCol = Convert.ToInt32(Console.ReadLine());
+
+                
+                checker.Position = new int[]{ newRow, newCol};
+                
+                board.DrawBoard();
+          }
         }
     }
 }
+
+
