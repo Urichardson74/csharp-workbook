@@ -1,124 +1,156 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace TowersOfHanoi
+namespace Chequers
 {
     class Program
     {
         static void Main(string[] args)
         {
-
-            Console.WriteLine("Hello World!");    
-            Game g = new Game();
-            g.Play();
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Game.Start();
         }
     }
+    class Checker
+    {
+        public string Symbol { get; set; }
+        public int[] Position { get; set; }
+        public string Color { get; set; }
+        public Checker(string color, int[] position)
+        {
+            this.Color = color;
+            if (this.Color == "black")
+            {
+                this.Symbol = "\u25CE";
+            }
+            if (this.Color == "white")
+            {
+                this.Symbol = "\u25C9";
+            }
+            this.Position = position;
+        }
+    }
+    class Board
+    {
+        public string[][] Grid { get; set; }
+        public List<Checker> Checkers { get; set; }
 
+        private static int[][] whitePositions = new int[][]
+        {
+            new int[] {0,1}, new int[] {0,3}, new int[] {0,5}, new int[] {0,7},
+            new int[] {1,0}, new int[] {1,2}, new int[] {1,4}, new int[] {1,6},
+            new int[] {2,1}, new int[] {2,3}, new int[] {2,5}, new int[] {2,7}
+        };
+        private static int[][] blackPositions = new int[][]
+        {
+            new int[] {5,0}, new int[] {5,2}, new int[] {5,4}, new int[] {5,6},
+            new int[] {6,1}, new int[] {6,3}, new int[] {6,5}, new int[] {6,7},
+            new int[] {7,0}, new int[] {7,2}, new int[] {7,4}, new int[] {7,6}
+        };
+        public void CreateBoard()
+        {
+            this.Grid = new string[][]
+            {
+                new string[] {" ", " ", " ", " ", " ", " ", " ", " "},
+                new string[] {" ", " ", " ", " ", " ", " ", " ", " "},
+                new string[] {" ", " ", " ", " ", " ", " ", " ", " "},
+                new string[] {" ", " ", " ", " ", " ", " ", " ", " "},
+                new string[] {" ", " ", " ", " ", " ", " ", " ", " "},
+                new string[] {" ", " ", " ", " ", " ", " ", " ", " "},
+                new string[] {" ", " ", " ", " ", " ", " ", " ", " "},
+                new string[] {" ", " ", " ", " ", " ", " ", " ", " "}
+            };
+        }
+        public void DrawBoard()
+        {
+            PlaceCheckers();
+            System.Console.WriteLine("  0 1 2 3 4 5 6 7");
+            for (int i = 0; i < 8; i++)
+            {
+                System.Console.WriteLine(i + " " + String.Join(" ", this.Grid[i]));
+            }
+        }
+        public void PlaceCheckers()
+        {
+            foreach (var checker in Checkers)
+            {
+                this.Grid[checker.Position[0]][checker.Position[1]] = checker.Symbol;
+            }
+        }
+        public void GenerateCheckers()
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                Checker black = new Checker("black", blackPositions[i]);
+                Checker white = new Checker("white", whitePositions[i]);
+                Checkers.Add(black);
+                Checkers.Add(white);
+            }
+        }
+        public Checker SelectChecker()
+        {
+            System.Console.WriteLine("Enter row number to select:");
+            int row = Convert.ToInt32(Console.ReadLine());
+            System.Console.WriteLine("Enter column number to select:");
+            int column = Convert.ToInt32(Console.ReadLine());
+            return Checkers.Find(x => x.Position.SequenceEqual(new List<int> { row, column }));
+        }
+        public void MoveChecker(Checker checker)
+        {
+            System.Console.WriteLine("Enter row number to move:");
+            int row = Convert.ToInt32(Console.ReadLine());
+            System.Console.WriteLine("Enter column number to move:");
+            int column = Convert.ToInt32(Console.ReadLine());
+            checker.Position[0] = row;
+            checker.Position[1] = column;
+        }
+        public void RemoveChecker(int oldRow, int oldCol, int newRow, int newCol)
+        {
+            if (Math.Abs(newRow - oldRow) > 1)
+            {
+                int row = (oldRow + newRow) / 2;
+                int col = (oldCol + newCol) / 2;
+                Checker checker = Checkers.Find(x => x.Position.SequenceEqual(new List<int> { row, col}));
+                Checkers.Remove(checker);
+            }
+        }
+        public bool CheckForWin()
+        {
+            return Checkers.All(x => x.Color == "white") || !Checkers.Exists(x => x.Color == "white");
+        }
+        public Board()
+        {
+            this.CreateBoard();
+            this.Checkers = new List<Checker>();
+        }
+    }
     class Game
     {
-        //public Tower[] towers { get; set; }
-        public Tower[] towers = new Tower[3];
-
-        public Block B1 = new Block(1);
-        public Block B2 = new Block(2);
-        public Block B3 = new Block(3);
-        public Block B4 = new Block(4);
-
-        public Game()
+        public static void Start()
         {
-            this.towers[0] = new Tower("A"); // seems wrong, already allocated space with new...
-            this.towers[1] = new Tower("B");
-            this.towers[2] = new Tower("C");
-            this.towers[0].PushBlock(B4);
-            this.towers[0].PushBlock(B3);
-            this.towers[0].PushBlock(B2);
-            this.towers[0].PushBlock(B3); // this is illegal, just checking
-            this.towers[0].PushBlock(B1);
-            PrintBoard();
-
-            Console.WriteLine("Done setting up the game, almost ready to play! ");
-        }
-
-        public void PrintBoard()
-        {
-            int w = 0;
-            for (int i=0; i<3; i++)
+            Board board = new Board();
+            board.GenerateCheckers();
+            board.DrawBoard();
+            while (!board.CheckForWin())
             {
-                for (int j=0; j<4; j++)
+                Checker temp = board.SelectChecker();
+                int oldRow = temp.Position[0];
+                int oldCol = temp.Position[1];
+                board.MoveChecker(temp);
+                int newRow = temp.Position[0];
+                int newCol = temp.Position[1];
+                board.RemoveChecker(oldRow, oldCol, newRow, newCol);
+                board.CreateBoard();
+                board.DrawBoard();
+                if (board.CheckForWin())
                 {
-                    if (towers[i].stack[j] == null) { w = 0; } else { w = towers[i].stack[j].Weight; }
-                    Console.WriteLine("Tower {0} position {1} block weight is {2} ", towers[i].tname, j, w);
+                    System.Console.WriteLine("Game Over!");
+                    return;
                 }
             }
         }
-
-        public static Tower[] Play()
-        {   Tower[] process = new Tower[2];
-            Console.WriteLine("Ready to play ... ");
-            Console.WriteLine("Which tower do you wish to move a block from ? A, B, or C.");
-            string towerChoice = Console.ReadLine();
-            Tower start = towers[towerChoice];
-            process[0] = start;
-            System.Console.ReadLine.WriteLine ("Which tower will you move it to?  A, B, or C.");
-            string finalChoice = Console.ReadLine();
-            Tower finish = towers[finalChoice];
-            process[1] = finish;
-            return process;
- 
-
-
-        }
-
     }
-
-    class Block
-    {
-        public Block(int weight)
-        {
-            this.Weight = weight;
-        }
-        public int Weight { get; private set; }
-    }
-
-    class Tower
-    {
-        //private Block[] stack = new Block[4]; // allocated space for 4 blocks even though there are none to start with, this might not be right...
-        public Block[] stack = new Block[4];
-        private int stackSize = 0; // keep track of how many blocks are on the stack
-        public string tname; // the nmae of the tower, e.g. "A", "B", ...
-        public Tower(string n) { tname = n; }
-        public void PushBlock(Block b)
-        {
-            Console.WriteLine("Adding block of weight {0} to tower {1} at position {2} ", b.Weight, tname, stackSize);
-            int legal = 1;
-            if (stackSize > 0)
-            {
-                Block topBlock = stack[stackSize - 1];
-                if (topBlock.Weight < b.Weight)
-                { // It's illegal
-                    legal = 0;
-                }
-            }
-            if (legal == 1)
-            {
-                stack[stackSize] = b;
-                stackSize++; // Increment the stack size after adding a block
-            }
-            else
-            {
-                Console.WriteLine("Sorry, that move is not legal.");
-            }
-            
-        }
-
-        public void PopBlock()
-        {
-            if (stackSize > 0)
-            {
-                stack[stackSize - 1] = null;
-                stackSize--;
-            }
-        }
-    }
-
 }
+
+

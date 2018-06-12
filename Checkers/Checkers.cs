@@ -148,12 +148,16 @@ namespace Checkers
             return Checkers.Find(x => x.Position.SequenceEqual(new List<int> { row, column }));
         }
         
-        public void RemoveChecker(Checker checker)
+          public void RemoveChecker(int row, int column, int newRow, int newCol)
         {
-            this.Checkers.Remove(checker);
-            return;
+            if (Math.Abs(newRow - row) > 1)
+            {
+                int row = (row + newRow) / 2;
+                int col = (column + newCol) / 2;
+                Checker checker = Checkers.Find(x => x.Position.SequenceEqual(new List<int> { row, col}));
+                Checkers.Remove(checker);
+            }
         }
-        
         public bool CheckForWin()
         {
             
@@ -195,9 +199,9 @@ namespace Checkers
                 int newRow = Convert.ToInt32(Console.ReadLine());
                 Console.WriteLine("Move to which Column:");
                 int newCol = Convert.ToInt32(Console.ReadLine());
-
-                
                 checker.Position = new int[]{ newRow, newCol};
+                board.RemoveChecker(row, column, newRow, newCol);
+               
                 
                 board.DrawBoard();
           }
