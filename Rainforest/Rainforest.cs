@@ -38,6 +38,7 @@ namespace RainForest
 
          
             Console.WriteLine("Please enter an item name to see where it is stored");
+            
             Console.WriteLine(index[Console.ReadLine()]);
             Console.WriteLine ("Hello World!");
             Console.ReadLine();

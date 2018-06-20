@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using SimpleHttp;
 using System.IO;
@@ -11,21 +11,40 @@ namespace WebServer
     class Program
     {
         static SqliteConnectionStringBuilder connectionStringBuilder = new SqliteConnectionStringBuilder();
+        static string style = @"
+            <style>
+                .items {
+                    display: flex;
+                    flex-wrap: wrap;
+                }
+                .item {
+                    min-width: 200px;
+                    padding: 10px;
+                    background-color: aliceblue;
+                    margin: 10px;
+                }
+            </style>
+        ";
         
         static void Main()
         {
             connectionStringBuilder.DataSource = "./database.db";
 
-            Route.Add("/items", (request, response, args) => {
-                response.AsText(getItems());
-            });
+            Route.Add("/", (request, response, args) => {
+                response.AsText("Hello, World!");
+            }, "GET");
 
             Route.Add("/items", (request, response, args) => {
+                response.AsText($"{style}{getItems()}");
+            }, "GET");
+
+            Route.Add("/items", (request, response, args) => {
+                request.ParseBody(args);
                 RunQuery($@"
                     INSERT into items (name, price, container_id)
-                    VALUES ('milk', '2.99', 1);
+                    VALUES ('{args["name"]}', '{args["price"]}', {args["container_id"]});
                 ");
-                response.AsText(getItems());
+                response.AsText($"{style}{getItems()}");
             }, "POST");
 
             //run the server
@@ -36,32 +55,36 @@ namespace WebServer
 
         static string getItems()
         {
-            List<Dictionary<string, string>> results = RunQuery(@"
+            var results = RunQuery($@"  
                 SELECT *
                 FROM items;
             ");
-            string stringResults = PrintResults(results);
-            stringResults += @"
-                <br /><br />
-                <form action='/items' method='POST'>
-                    <label> Name
-                        <input name='name' />
+            string html = $@"
+                <div class='items'>
+                    <div class='item'>{String.Join("</div><br /><div class='item'>", PrintResults(results).Split('\n'))}</div>
+                </div>
+            ";
+            html += @"
+                <br/><br/>
+                <form method='POST' action='/items'>
+                    <label>Name
+                    <input name='name' />
                     </label>
-                    <label> Price ($)
-                        <input name='price' />
+                    <label>Price
+                    <input name='price' />
                     </label>
-                    <label> Price ($)
-                        <select name='container_id'>
-                            <option value='1'>Austin-1</option>
-                            <option value='2'>San Antonio-1</option>
-                            <option value='3'>Houston-1</option>
-                            <option value='4'>Dallas-1</option>
-                        </select>
+                    <label>Container
+                    <select name='container_id'>
+                        <option value='1'>Austin-1</option>
+                        <option value='2'>San Antonio-1</option>
+                        <option value='3'>Houston-1</option>
+                        <option value='4'>Dallas-1</option>
+                    </select>
                     </label>
-                    <input type='Submit' value='Submit' />
+                    <input type='submit' value='Submit' />
                 </form>
             ";
-            return stringResults;
+            return html;
         }
 
         static List<Dictionary<string, string>> RunQuery(string query)
@@ -100,7 +123,7 @@ namespace WebServer
             foreach (var result in results)
             {
                 System.Collections.Generic.IEnumerable<string> lines = result.Select(kvp => kvp.Key + ": " + kvp.Value);
-                resultsString += String.Join(Environment.NewLine, lines);
+                resultsString += $"{String.Join("<br/>", lines)}\n";
             }
             return resultsString;
         }

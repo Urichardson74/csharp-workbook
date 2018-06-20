@@ -148,16 +148,12 @@ namespace Checkers
             return Checkers.Find(x => x.Position.SequenceEqual(new List<int> { row, column }));
         }
         
-          public void RemoveChecker(int row, int column, int newRow, int newCol)
+        public void RemoveChecker(Checker checker)
         {
-            if (Math.Abs(newRow - row) > 1)
-            {
-                int row = (row + newRow) / 2;
-                int col = (column + newCol) / 2;
-                Checker checker = Checkers.Find(x => x.Position.SequenceEqual(new List<int> { row, col}));
-                Checkers.Remove(checker);
-            }
+            this.Checkers.Remove(checker);
+            return;
         }
+        
         public bool CheckForWin()
         {
             
@@ -184,29 +180,83 @@ namespace Checkers
             Board board = new Board();
             board.GenerateCheckers();
             board.DrawBoard();
+
+            // need to keep track of whose go it is, so it always goes b, w, b etc.
+            string whoseTurn = "black";
             
             while (!board.CheckForWin())
             
             {
+                bool validMove = false;
                 Console.WriteLine("Select checker row:");
                 int row = Convert.ToInt32(Console.ReadLine());
                 Console.WriteLine("Select checker column:");
                 int col = Convert.ToInt32(Console.ReadLine());
 
                 Checker checker = board.SelectChecker(row, col);
+
+                // should now check if the checker exists and is the right color e.g. 
+                //if (!(checker == null) && (whoseTurn == checker.Color)
+                //{}
+
                 Console.WriteLine("Please move checker to an empty space.");
                 Console.WriteLine("Move to which row:");
                 int newRow = Convert.ToInt32(Console.ReadLine());
                 Console.WriteLine("Move to which Column:");
                 int newCol = Convert.ToInt32(Console.ReadLine());
-                checker.Position = new int[]{ newRow, newCol};
-                board.RemoveChecker(row, column, newRow, newCol);
-               
-                
+
+                // First we need to check if it's a valid move, i.e. it's either 1 diagonal away from the existing position, or it's 2 diagonals jumping over an opponent checker...
+
+                Checker newPosChecker = board.SelectChecker(newRow, newCol);
+                if (newPosChecker == null) // there's nothing there yet, so far so good
+                {
+                    // Is it one diagonal apart?
+                    if (Math.Abs((row - newRow) * (col - newCol)) == 1) // it is exactly 1 row and 1 column apart?
+                    {
+                        validMove = true;
+                        //checker.Position = new int[] { newRow, newCol }; // SEM - moved to below
+                    }
+
+                    // or is it exactly 2 row and 2 columns apart, with a checker in between?
+                    else
+                    {
+                        if ((Math.Abs(row - newRow) == 2) && (Math.Abs(col - newCol) == 2)) // exactly 2 squares away, so far so good
+                        {
+                            // now to check whether something got jumped over ...?
+                            int deadCheckerRow = (row + newRow) / 2;
+                            int deadCheckerCol = (col + newCol) / 2;
+                            Checker deadChecker = board.SelectChecker(deadCheckerRow, deadCheckerCol);
+                            if (!(deadChecker == null)) // and do we need to check the color of it? Can you jump over your own checkers?
+                            {
+                                validMove = true;
+                                // remove the dead checker
+                                board.RemoveChecker(deadChecker);
+                                board.Grid[deadCheckerRow][deadCheckerCol] = " "; // the checker is removed, the grid position needs to be cleared
+                            }
+                        }
+                    }
+                }
+                if (validMove == true)
+                {
+                    checker.Position = new int[] { newRow, newCol };
+                    board.Grid[row][col] = " "; // the checker is moved, the grid position needs to be cleared
+                    whoseTurn = SwitchTurns(whoseTurn);
+                }
+                else
+                { 
+                    Console.WriteLine("Not a legal move");
+                    Console.WriteLine("Enter any key");
+                    Console.ReadLine();
+                }
                 board.DrawBoard();
-          }
+            }
+        }
+
+        string SwitchTurns(string whoseTurn) // Switch colors: if it's black's turn - returns white, otherwise returns black.
+        {
+            if (whoseTurn == "black")
+            { return "white"; }
+            return "black";
         }
     }
 }
-
-
