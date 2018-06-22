@@ -62,7 +62,7 @@ namespace WebServer
             HttpServer.ListenAsync(port, CancellationToken.None, Route.OnHttpRequestAsync).Wait();
         }
        
-        //Methods to return chosen fields 
+        //Methods to return chosen fields
         static string getItems()
         {
             var results = RunQuery($@"  
@@ -108,6 +108,27 @@ namespace WebServer
                     <div class='container'>{String.Join("</div><br /><div class='container'>", PrintResults(results).Split('\n'))}</div>
                 </div>
             "; 
+                //form to add new containers Route/containers not found?
+                html += @"
+                <br/><br/>
+                <form method='POST' action='/containers'>
+                    <label>ID
+                    <input name='id' />
+                    </label>
+                    <label>Name
+                    <input name='name' />
+                    </label>
+                    <label>Warehouse
+                    <select name='warehouse_id'>
+                        <option value='1'>Austin-1</option>
+                        <option value='2'>San Antonio-1</option>
+                        <option value='3'>Houston-1</option>
+                        <option value='4'>Dallas-1</option>
+                    </select>
+                    </label>
+                    <input type='submit' value='Submit' />
+                </form>
+            ";
             return html;
         }
 
